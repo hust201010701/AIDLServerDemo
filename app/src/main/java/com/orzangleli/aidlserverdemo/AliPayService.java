@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -44,14 +45,13 @@ public class AliPayService extends Service{
         }
 
         @Override
-        public boolean pay(double money) throws RemoteException {
+        public boolean pay(OrderVo orderVo) throws RemoteException {
             Intent intent = new Intent(AliPayService.this, PayActivity.class);
-            intent.putExtra("price", money+"");
+            intent.putExtra("orderVo", orderVo);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AliPayService.this.startActivity(intent);
             return true;
         }
     };
-
 
 }

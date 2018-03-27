@@ -29,7 +29,7 @@ public class PayActivity extends Activity {
     private Button mSureBtn;
     private Button mCancelBtn;
 
-    private String mPrice;
+    private OrderVo mOrderVo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +41,15 @@ public class PayActivity extends Activity {
         mSureBtn = this.findViewById(R.id.sure);
         mCancelBtn = this.findViewById(R.id.cancel);
 
-        mPrice = this.getIntent().getStringExtra("price");
+        mOrderVo = this.getIntent().getParcelableExtra("orderVo");
 
-        mContentTv.setText("您需要支付"+mPrice+"元，是否支付？");
+        double oPrice = Double.parseDouble(mOrderVo.getPrice());
+        double dPrice = Double.parseDouble(mOrderVo.getDiscount());
+
+        double realPay = oPrice - dPrice;
+        realPay = realPay < 0 ? 0 : realPay;
+
+        mContentTv.setText(mOrderVo.getName() + "\n订单编号：" + mOrderVo.getId() + "\n订单金额：" + mOrderVo.getPrice() + "元\n折扣金额：" + mOrderVo.getDiscount() + "元" + "\n您需要支付"+realPay+"元，是否支付？");
 
         mSureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
